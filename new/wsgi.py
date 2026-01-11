@@ -1,14 +1,9 @@
-"""
-WSGI entry point for production deployment on Render
-"""
-import os
 import sys
+import os
 
-# Add src directory to Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SRC_DIR = os.path.join(BASE_DIR, "src")
 
-# Import the Flask app
+sys.path.append(SRC_DIR)
+
 from app import app
-
-if __name__ == '__main__':
-    app.run()

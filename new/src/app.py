@@ -29,7 +29,12 @@ try:
 except ImportError:
     logger.warning("python-dotenv not installed. Environment variables from .env will not be loaded.")
 
-# ---------------------- FLASK APP CONFIG ---------------------- #
+# ---------------------- FLASK APP CONFIG 
+# 
+# ---------------------- #
+
+from flask import Flask
+app = Flask(__name__)
 
 # Get project root directory (parent of src/)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
