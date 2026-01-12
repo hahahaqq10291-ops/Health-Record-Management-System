@@ -1,0 +1,99 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database
+data/student_health.db
+data/student_health.db-journal
+*.db-wal
+*.db-shm
+
+# Backups
+backups/
+*.backup
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Uploads
+documents/
+static/profile_pics/
+
+# Encryption keys (DO NOT COMMIT)
+config/.encryption_key
+config/.secret_key
+
+# Cache
+*.cache
+.cache/
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db
+*.ini
+
+# Testing
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Build artifacts
+build/
+dist/
+*.tar.gz
+*.whl
+
+# Runtime artifacts
+*.pid
+*.seed
