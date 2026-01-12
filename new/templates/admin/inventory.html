@@ -860,11 +860,10 @@
       </button>
     </div>
 
-    <form
-      id="addMedicineForm"
-      class="form-group-modal"
-      onsubmit="return validateInventoryMedicineForm()"
-    >
+    <form id="addMedicineForm" class="form-group-modal">
+      <!-- CSRF Token -->
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
       <!-- Item Name & Category -->
       <div class="form-row-modal">
         <div>
@@ -1007,11 +1006,28 @@
     addForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
+      // Create FormData from form
       const formData = new FormData(this);
+
+      // Get CSRF token from form field
+      const csrfToken =
+        formData.get("csrf_token") ||
+        document.querySelector('input[name="csrf_token"]')?.value ||
+        (window.csrf_token ? window.csrf_token : "");
+
+      // Convert FormData to URLSearchParams for form encoding
+      const params = new URLSearchParams();
+      for (const [key, value] of formData) {
+        params.append(key, value);
+      }
 
       fetch("{{ url_for('add_medicine') }}", {
         method: "POST",
-        body: formData,
+        body: params,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-CSRFToken": csrfToken,
+        },
       })
         .then((response) => {
           if (!response.ok) {
@@ -1091,8 +1107,18 @@
 
   function confirmInventoryDelete() {
     const id = deleteInventoryData.id;
+
+    // Get CSRF token from page
+    const csrfToken =
+      document.querySelector('input[name="csrf_token"]')?.value ||
+      (window.csrf_token ? window.csrf_token : "");
+
     fetch(`/delete_medicine/${id}`, {
       method: "POST",
+      headers: {
+        "X-CSRFToken": csrfToken,
+        "Content-Type": "application/json",
+      },
     })
       .then((response) => response.json())
       .then((data) => {

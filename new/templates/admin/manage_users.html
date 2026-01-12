@@ -743,10 +743,14 @@
   document.addEventListener('DOMContentLoaded', setupNotificationModal);
 
   function updateUserRole(userId, newRole) {
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value || 
+                      (window.csrf_token ? window.csrf_token : '');
+    
     fetch(`/api/user/${userId}/role`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken
       },
       body: JSON.stringify({ role: newRole })
     })
@@ -768,11 +772,14 @@
   function toggleUserStatus(button) {
     const userId = button.dataset.userId;
     const currentStatus = parseInt(button.dataset.isActive) === 1;
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value || 
+                      (window.csrf_token ? window.csrf_token : '');
     
     fetch(`/api/user/${userId}/status`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken
       },
       body: JSON.stringify({ is_active: !currentStatus })
     })
@@ -807,11 +814,16 @@
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
+        // Get CSRF token from page
+        const csrfToken = document.querySelector('input[name="csrf_token"]')?.value || 
+                          (window.csrf_token ? window.csrf_token : '');
+
         // User confirmed deletion
         fetch(`/api/user/${userId}/delete`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
           }
         })
           .then(response => response.json())
@@ -916,7 +928,8 @@
         fetch(`/api/user/${userId}/advisory-class`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('input[name="csrf_token"]')?.value || (window.csrf_token ? window.csrf_token : '')
           },
           body: JSON.stringify({ advisory_class: advisoryClass })
         })
@@ -954,7 +967,8 @@
       fetch(`/api/user/${userId}/advisory-class`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('input[name="csrf_token"]')?.value || (window.csrf_token ? window.csrf_token : '')
         },
         body: JSON.stringify({ advisory_class: advisoryClass })
       })

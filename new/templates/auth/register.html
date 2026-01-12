@@ -76,6 +76,7 @@
           id="registerForm"
           onsubmit="return validateRegisterForm()"
         >
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
           <div class="form-group">
             <input
               type="text"
@@ -90,7 +91,7 @@
             />
           </div>
 
-            <div class="form-group">
+          <div class="form-group">
             <input
               type="text"
               id="advisory_class"
@@ -149,11 +150,9 @@
             />
           </div>
 
-        
-
           <button type="submit" class="btn-signup">Sign Up</button>
-          <br>
-          <br>
+          <br />
+          <br />
           <p class="signin-text">
             Already have an account?
             <a href="{{ url_for('login') }}">Sign in</a>

@@ -59,7 +59,7 @@
 
   .doc-card-header {
     padding: 15px;
-   background: linear-gradient(
+    background: linear-gradient(
       135deg,
       rgba(255, 107, 157, 0.1),
       rgba(255, 139, 171, 0.1)
@@ -350,7 +350,7 @@
 <div class="doc-container">
   <div class="doc-header">
     <div>
-      <h1> Document Management</h1>
+      <h1>Document Management</h1>
       <p style="color: #666; margin-top: 5px">
         Store and manage sensitive documents, records, and personal information
       </p>
@@ -439,7 +439,7 @@
             data-file-type="{{ doc.document_type }}"
             data-action="view"
           >
-             View
+            View
           </button>
           {% else %}
           <button
@@ -456,7 +456,7 @@
             data-doc-id="{{ doc.id }}"
             data-action="verify"
           >
-             Verify
+            Verify
           </button>
           {% endif %}
 
@@ -466,7 +466,7 @@
             data-doc-name="{{ doc.document_name }}"
             data-action="delete"
           >
-             Delete
+            Delete
           </button>
         </div>
       </div>
@@ -612,10 +612,16 @@
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
+        // Get CSRF token from page
+        const csrfToken =
+          document.querySelector('input[name="csrf_token"]')?.value ||
+          (window.csrf_token ? window.csrf_token : "");
+
         fetch(`/documents/${docId}/delete`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
           },
         })
           .then((response) => response.json())
@@ -661,10 +667,16 @@
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
+        // Get CSRF token from page
+        const csrfToken =
+          document.querySelector('input[name="csrf_token"]')?.value ||
+          (window.csrf_token ? window.csrf_token : "");
+
         fetch(`/documents/${docId}/verify`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
           },
         })
           .then((response) => response.json())

@@ -274,6 +274,9 @@
     <div class="alert error" id="errorAlert"></div>
 
     <form id="uploadForm" enctype="multipart/form-data" onsubmit="return validateUploadForm()">
+      <!-- CSRF Token -->
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      
       <!-- Hidden data storage for lists -->
       <div id="dataContainer" style="display: none;"
         data-students="{{ students|tojson|replace('\"', '&quot;') }}"

@@ -77,7 +77,6 @@
   .form-group textarea:focus {
     outline: none;
     border-color: #a83e51;
-
   }
 
   .form-group textarea {
@@ -157,7 +156,11 @@
   }
 
   .info-box {
-   background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(255, 139, 171, 0.1));
+    background: linear-gradient(
+      135deg,
+      rgba(255, 107, 157, 0.1),
+      rgba(255, 139, 171, 0.1)
+    );
     border-left: 4px solid #a83e51;
     padding: 1rem;
     border-radius: 4px;
@@ -211,6 +214,7 @@
       id="profileForm"
       onsubmit="return validateProfileForm()"
     >
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
       <!-- Profile Header -->
       <div class="profile-header">
         <h2>{{ user.fullname or user.username }}</h2>

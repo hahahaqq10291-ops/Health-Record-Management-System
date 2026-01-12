@@ -1117,6 +1117,7 @@ advisory_class %}
       action="{{ url_for('clinic_visit') }}"
       onsubmit="return validateClinicVisitForm()"
     >
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
       <!-- Person Selection Section -->
       <div class="form-section">
         <h2>Patient Information</h2>
@@ -1649,11 +1650,17 @@ advisory_class %}
     deleteBtn.disabled = true;
     deleteBtn.textContent = "Deleting...";
 
+    // Get CSRF token from page
+    const csrfToken =
+      document.querySelector('input[name="csrf_token"]')?.value ||
+      (window.csrf_token ? window.csrf_token : "");
+
     // Submit delete via AJAX
     fetch(`/clinic-visit/${currentDeleteVisitId}/delete`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
       },
     })
       .then((response) => {

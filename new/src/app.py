@@ -1,7 +1,7 @@
 import logging
 import re
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, Response
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_mail import Mail, Message
 from functools import wraps
 import sqlite3
@@ -33,9 +33,6 @@ except ImportError:
 # 
 # ---------------------- #
 
-from flask import Flask
-app = Flask(__name__)
-
 # Get project root directory (parent of src/)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -63,7 +60,7 @@ app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
 app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', True)
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', '')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', '')
-app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER', 'noreply@lyfjshs.edu.ph')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER', '')
 
 # Initialize Flask-Mail
 mail = Mail(app)
@@ -136,7 +133,7 @@ def check_user_status():
 
 @app.context_processor
 def inject_user():
-    """Make current user available to all templates"""
+    """Make current user and CSRF token available to all templates"""
     user = None
     if session.get("logged_in"):
         db = get_db_connection()
@@ -148,7 +145,9 @@ def inject_user():
                 db.close()
             except sqlite3.Error:
                 pass
-    return {'current_user': user, 'max': max, 'min': min, 'range': range}
+    
+    # Return context with CSRF token generator function
+    return {'current_user': user, 'max': max, 'min': min, 'range': range, 'csrf_token': generate_csrf}
 
 # ---------------------- DATABASE HELPER FUNCTIONS ---------------------- #
 

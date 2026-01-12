@@ -72,6 +72,26 @@
     {% block extra_css %}{% endblock %}
   </head>
   <body>
+    <!-- CSRF Token for all AJAX requests -->
+    <input
+      type="hidden"
+      id="csrf_token"
+      name="csrf_token"
+      value="{{ csrf_token() }}"
+    />
+    <script>
+      // Make CSRF token globally accessible
+      function initCSRFToken() {
+        window.csrf_token = document.getElementById("csrf_token")?.value || "";
+      }
+      // Initialize immediately if DOM is ready, otherwise wait
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initCSRFToken);
+      } else {
+        initCSRFToken();
+      }
+    </script>
+
     <div class="app-container">
       <!-- MOBILE MENU TOGGLE BUTTON -->
       <button class="mobile-menu-toggle" id="mobileMenuToggle">

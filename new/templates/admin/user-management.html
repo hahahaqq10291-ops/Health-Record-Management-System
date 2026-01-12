@@ -1182,8 +1182,16 @@
       url = `/delete_teacher/${id}`;
     }
 
+    // Get CSRF token from page
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value ||
+                      (window.csrf_token ? window.csrf_token : '');
+
     fetch(url, {
       method: "POST",
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'Content-Type': 'application/json'
+      }
     })
       .then((response) => {
         if (response.ok) {
@@ -1569,10 +1577,21 @@
       );
 
       try {
+        const csrfToken =
+          document.querySelector('input[name="csrf_token"]')?.value ||
+          (window.csrf_token ? window.csrf_token : "");
+
         const response = await fetch(`/edit_student/${studentId}`, {
           method: "POST",
           body: formData,
+          headers: {
+            "X-CSRFToken": csrfToken,
+          },
         });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
         const result = await response.json();
         if (result.success) {
@@ -1656,10 +1675,21 @@
       );
 
       try {
+        const csrfToken =
+          document.querySelector('input[name="csrf_token"]')?.value ||
+          (window.csrf_token ? window.csrf_token : "");
+
         const response = await fetch(`/edit_teacher/${teacherId}`, {
           method: "POST",
           body: formData,
+          headers: {
+            "X-CSRFToken": csrfToken,
+          },
         });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
         const result = await response.json();
         if (result.success) {
